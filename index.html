@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Movie List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- navigation -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">Movie List</span>
+        </div>
+    </nav>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-2">
+                <ul id="movie-list" class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="action-tab" data-toggle="tab" href="#action" role="tab" aria-controls="action" aria-selected="true" data-id="1">Action</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="adventure-tab" data-toggle="tab" href="#adventure" role="tab" aria-controls="adventure" aria-selected="false" data-id="2">Adventure</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="animation-tab" data-toggle="tab" href="#animation" role="tab" aria-controls="animation" aria-selected="false" data-id="3">Animation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="comedy-tab" data-toggle="tab" href="#comedy" role="tab" aria-controls="comedy" aria-selected="false" data-id="4">Comedy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="crime-tab" data-toggle="tab" href="#crime" role="tab" aria-controls="crime" aria-selected="false" data-id="5">Crime</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="documentary-tab" data-toggle="tab" href="#documentary" role="tab" aria-controls="documentary" aria-selected="false" data-id="6">Documentary</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="drama-tab" data-toggle="tab" href="#drama" role="tab" aria-controls="drama" aria-selected="false" data-id="7">Drama</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="family-tab" data-toggle="tab" href="#family" role="tab" aria-controls="family" aria-selected="false" data-id="8">Family</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="Fantasy-tab" data-toggle="tab" href="#Fantasy" role="tab" aria-controls="Fantasy" aria-selected="false" data-id="9">Fantasy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false" data-id="10">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="horror-tab" data-toggle="tab" href="#horror" role="tab" aria-controls="horror" aria-selected="false" data-id="11">Horror</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="music-tab" data-toggle="tab" href="#music" role="tab" aria-controls="music" aria-selected="false" data-id="12">Music</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="mystery-tab" data-toggle="tab" href="#mystery" role="tab" aria-controls="mystery" aria-selected="false" data-id="13">Mystery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="romance-tab" data-toggle="tab" href="#romance" role="tab" aria-controls="romance" aria-selected="false" data-id="14">Romance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="scienceFiction-tab" data-toggle="tab" href="#scienceFiction" role="tab" aria-controls="scienceFiction" aria-selected="false" data-id="15">Science Fiction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tvMovie-tab" data-toggle="tab" href="#tvMovie" role="tab" aria-controls="tvMovie" aria-selected="false" data-id="16">TV Movie</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="thriller-tab" data-toggle="tab" href="#thriller" role="tab" aria-controls="thriller" aria-selected="false" data-id="17">Thriller</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="war-tab" data-toggle="tab" href="#war" role="tab" aria-controls="war" aria-selected="false" data-id="18">War</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="western-tab" data-toggle="tab" href="#western" role="tab" aria-controls="western" aria-selected="false" data-id="19">Western</a>
+                    </li>
+                </ul>
+                <!-- display song list here -->
+            </div>
+            <div class="col-md-10" id="data-panel">
+                <!-- display lyrics here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
