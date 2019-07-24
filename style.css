@@ -12,6 +12,7 @@
 
 .modal-footer {
     justify-content: center !important;
+    overflow-x: scroll;
 }
 
 h6 {
@@ -21,7 +22,7 @@ h6 {
 h6,
 p {
     white-space: nowrap;
-    font-size: x-small;
+    font-size: xx-small;
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {

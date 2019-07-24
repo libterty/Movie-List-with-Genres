@@ -26,7 +26,7 @@ const movie = {
     "19": "Western"
 }
 
-let dataTemp = [];
+let dataTemp = {};
 
 axios.get(INDEX_URL)
     .then((response) => {
@@ -35,36 +35,44 @@ axios.get(INDEX_URL)
 
 movieList.addEventListener('click', (event) => {
     if (event.target.matches('.nav-link')) {
-        // emptyContent放在event第一個執行原因在於清空上一個.nav-link產生的內容，如果empty功能放到後面會沒有任何畫面會輸出
-        emptyContent();
         // 注意型別問題
         let itemId = Number(event.target.dataset.id);
         let itemNum = event.target.textContent;
-        let restContent = event.target.parentElement.parentElement.parentElement.parentElement.children[1].children;
-        console.log(restContent)
+        let itemIdStr = event.target.dataset.id;
+        if (Object.keys(dataTemp).indexOf(itemIdStr) !== -1) {
+            dataTemp[itemId].length = 0;
+        }
         for (let j = 0; j < data.length; j++) {
             if (data[j].genres.indexOf(itemId) !== -1) {
-                dataTemp.push(data[j]);
+                if (Object.keys(dataTemp).indexOf(itemIdStr) !== -1) {
+                    dataTemp[itemId].push(data[j]);
+                } else {
+                    dataTemp[itemId] = [];
+                    dataTemp[itemId].push(data[j]);
+                }
             }
         }
-        // 先產生card內容
+        console.log(dataTemp);
+        // 先產生card內容，在做分類classifcation功能
         displayDataList(dataTemp);
-        // classifcation分類功能以上一個displayDataList作為event.target為基礎，所以需要放在displayDataList後面
-        classifcation();
     }
-})
+});
 
 function classifcation() {
-    for (let k = 0; k < dataTemp.length; k++) {
-        for (let a = 0; a < Object.keys(movie).length; a++) {
-            // 注意型別問題
-            let movieKey = Number(Object.keys(movie)[a]);
-            let movieValue = Object.values(movie)[a];
-            for (let b = 0; b < dataTemp[k].genres.length; b++) {
-                if (dataTemp[k].genres[b] === movieKey) {
-                    dataTemp[k].genres[b] = movieValue;
+    let itemId = Number(event.target.dataset.id);
+    let movieId = itemId - 1;
+    for (let k = 0; k < dataTemp[itemId].length; k++) {
+        // 注意型別問題
+        for (let b = 0; b < dataTemp[itemId][k].genres.length; b++) {
+            for (let a = 0; a < 19; a++) {
+                let movieKey = Number(Object.keys(movie)[a]);
+                let movieValue = Object.values(movie)[a];
+                // 複製array，使用原先dataTempa在執行dataTemp.. = movieValue會改變原有陣列的長度
+                let newArr = dataTemp[itemId][k].genres.slice(0);
+                if (newArr[b] === movieKey) {
+                    newArr[b] = movieValue;
                     let showCategory = event.target.parentElement.parentElement.parentElement.parentElement.children[1].children[k].children[0].children[2];
-                    showCategory.innerHTML += `<p>${dataTemp[k].genres[b]}</P>`
+                    showCategory.innerHTML += `<p>${newArr[b]}</P>`;
                 }
             }
         }
@@ -72,13 +80,17 @@ function classifcation() {
 };
 
 function displayDataList(dataTemp) {
-    for (let i = 0; i < dataTemp.length; i++) {
+    if (dataPanel.childElementCount !== 0) {
+        emptyContent();
+    }
+    let itemId = Number(event.target.dataset.id);
+    for (let i = 0; i < dataTemp[itemId].length; i++) {
         dataPanel.innerHTML += `
             <div class="flex">
                 <div class="card mb-2">
-                    <img class="card-img-top" src="${POSTER_URL}${dataTemp[i].image}" alt="Card image cap">
+                    <img class="card-img-top" src="${POSTER_URL}${dataTemp[itemId][i].image}" alt="Card image cap">
                     <div class="card-body movie-item-body">
-                        <h6>${dataTemp[i].title}</h6>
+                        <h6>${dataTemp[itemId][i].title}</h6>
                     </div>
                     <div class="modal-footer">
                     </div>
@@ -86,11 +98,11 @@ function displayDataList(dataTemp) {
             </div>
         `;
     }
+    classifcation();
 };
 
 function emptyContent() {
     while (dataPanel.firstChild) {
         dataPanel.removeChild(dataPanel.firstChild);
     }
-    dataTemp.length = 0;
 }
