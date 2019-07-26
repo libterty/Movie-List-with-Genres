@@ -35,25 +35,21 @@ axios.get(INDEX_URL)
 
 movieList.addEventListener('click', (event) => {
     if (event.target.matches('.nav-link')) {
-        // 注意型別問題
         let itemId = Number(event.target.dataset.id);
-        let itemNum = event.target.textContent;
         let itemIdStr = event.target.dataset.id;
         if (Object.keys(dataTemp).indexOf(itemIdStr) !== -1) {
             dataTemp[itemId].length = 0;
-        }
-        for (let j = 0; j < data.length; j++) {
-            if (data[j].genres.indexOf(itemId) !== -1) {
+        };
+        data.forEach(function(item) {
+            if (item.genres.indexOf(itemId) !== -1) {
                 if (Object.keys(dataTemp).indexOf(itemIdStr) !== -1) {
-                    dataTemp[itemId].push(data[j]);
+                    dataTemp[itemId].push(item);
                 } else {
                     dataTemp[itemId] = [];
-                    dataTemp[itemId].push(data[j]);
+                    dataTemp[itemId].push(item);
                 }
             }
-        }
-        console.log(dataTemp);
-        // 先產生card內容，在做分類classifcation功能
+        });
         displayDataList(dataTemp);
     }
 });
@@ -61,42 +57,47 @@ movieList.addEventListener('click', (event) => {
 function classifcation() {
     let itemId = Number(event.target.dataset.id);
     let movieId = itemId - 1;
-    for (let k = 0; k < dataTemp[itemId].length; k++) {
-        // 注意型別問題
-        for (let b = 0; b < dataTemp[itemId][k].genres.length; b++) {
-            for (let a = 0; a < 19; a++) {
-                let movieKey = Number(Object.keys(movie)[a]);
-                let movieValue = Object.values(movie)[a];
-                // 複製array，使用原先dataTempa在執行dataTemp.. = movieValue會改變原有陣列的長度
-                let newArr = dataTemp[itemId][k].genres.slice(0);
-                if (newArr[b] === movieKey) {
-                    newArr[b] = movieValue;
-                    let showCategory = event.target.parentElement.parentElement.parentElement.parentElement.children[1].children[k].children[0].children[2];
-                    showCategory.innerHTML += `<p>${newArr[b]}</P>`;
+    if (typeof(dataTemp[itemId]) === "object") {
+        for (let k = 0; k < dataTemp[itemId].length; k++) {
+            for (let b = 0; b < dataTemp[itemId][k].genres.length; b++) {
+                for (let a = 0; a < 19; a++) {
+                    let movieKey = Number(Object.keys(movie)[a]);
+                    let movieValue = Object.values(movie)[a];
+                    let newArr = dataTemp[itemId][k].genres.slice(0);
+                    if (newArr[b] === movieKey) {
+                        newArr[b] = movieValue;
+                        let showCategory = event.target.parentElement.parentElement.parentElement.parentElement.children[1].children[k].children[0].children[2];
+                        showCategory.innerHTML += `<p>${newArr[b]}</P>`;
+                    }
                 }
             }
         }
     }
+
 };
 
 function displayDataList(dataTemp) {
-    if (dataPanel.childElementCount !== 0) {
+    if (dataPanel.childElementCount !== 0 || dataPanel.childNodes[0] !== null) {
         emptyContent();
-    }
+    };
     let itemId = Number(event.target.dataset.id);
-    for (let i = 0; i < dataTemp[itemId].length; i++) {
-        dataPanel.innerHTML += `
-            <div class="flex">
-                <div class="card mb-2">
-                    <img class="card-img-top" src="${POSTER_URL}${dataTemp[itemId][i].image}" alt="Card image cap">
-                    <div class="card-body movie-item-body">
-                        <h6>${dataTemp[itemId][i].title}</h6>
-                    </div>
-                    <div class="modal-footer">
+    if (typeof(dataTemp[itemId]) !== "object") {
+        dataPanel.innerHTML = `Sorry we don't have corresponding content in our genres`
+    } else {
+        dataTemp[itemId].forEach(function(obj) {
+            dataPanel.innerHTML += `
+                <div class="flex">
+                    <div class="card mb-2">
+                        <img class="card-img-top" src="${POSTER_URL}${obj.image}" alt="Card image cap">
+                        <div class="card-body movie-item-body">
+                            <h6>${obj.title}</h6>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
+        });
     }
     classifcation();
 };
